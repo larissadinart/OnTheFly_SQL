@@ -89,12 +89,12 @@ namespace OnTheFly_BD
                     while (reader.Read())
                     {
                         recebe = reader.GetString(0);
-                        Console.Write(" {0}", reader.GetString(0));
-                        Console.Write(" {0}", reader.GetString(1));
-                        Console.Write(" {0}", reader.GetDateTime(2).ToShortDateString());
-                        Console.Write(" {0}", reader.GetDateTime(3).ToShortDateString());
-                        Console.Write(" {0}", reader.GetDateTime(4).ToShortDateString());
-                        Console.Write(" {0}", reader.GetString(5));
+                        Console.Write(" CPF: {0}", reader.GetString(0));
+                        Console.Write(" Razão Social: {0}", reader.GetString(1));
+                        Console.Write(" Data de abertura: {0}", reader.GetDateTime(2).ToShortDateString());
+                        Console.Write(" Data de cadastro: {0}", reader.GetDateTime(3).ToShortDateString());
+                        Console.Write(" Data do último vôo: {0}", reader.GetDateTime(4).ToShortDateString());
+                        Console.Write(" Situação: {0}", reader.GetString(5));
                         Console.WriteLine("\n");
                     }
                 }
@@ -166,13 +166,13 @@ namespace OnTheFly_BD
                     while (reader.Read())
                     {
                         recebe = reader.GetString(0);
-                        Console.Write(" {0}", reader.GetString(0));
-                        Console.Write(" {0}", reader.GetString(1));
-                        Console.Write(" {0}", reader.GetDateTime(2).ToShortDateString());
-                        Console.Write(" {0}", reader.GetString(3));
-                        Console.Write(" {0}", reader.GetDateTime(4).ToShortDateString());
-                        Console.Write(" {0}", reader.GetDateTime(5).ToShortDateString());
-                        Console.Write(" {0}", reader.GetString(6));
+                        Console.Write(" CPF: {0}", reader.GetString(0));
+                        Console.Write(" Nome: {0}", reader.GetString(1));
+                        Console.Write(" Data de nascimento:{0}", reader.GetDateTime(2).ToShortDateString());
+                        Console.Write(" Sexo: {0}", reader.GetString(3));
+                        Console.Write(" Data de cadastro: {0}", reader.GetDateTime(4).ToShortDateString());
+                        Console.Write(" Data da última compra:{0}", reader.GetDateTime(5).ToShortDateString());
+                        Console.Write(" Situação: {0}", reader.GetString(6));
                         Console.WriteLine("\n");
 
                     }
@@ -227,6 +227,111 @@ namespace OnTheFly_BD
 
             return recebe;
 
+        }
+        public String LocalizarVoo(string sql, SqlConnection conexaosql)
+        {
+            String recebe = "";
+
+            try
+            {
+                SqlConnection conexao = new SqlConnection(Caminho());
+                conexao.Open();
+
+                SqlCommand cmd = new SqlCommand(sql, conexao);
+
+                SqlDataReader reader = null;
+
+                using (reader = cmd.ExecuteReader())
+                {
+                    Console.Clear();
+
+                    while (reader.Read())
+                    {
+                        recebe = reader.GetString(0);
+                        Console.Write(" ID: {0}", reader.GetString(0));
+                        Console.Write(" Destino: {0}", reader.GetString(1));
+                        Console.Write(" Data vôo:{0}", reader.GetDateTime(2).ToShortDateString());
+                        Console.Write(" Data de cadastro: :{0}", reader.GetDateTime(3).ToShortDateString());
+                        Console.Write(" Situação: {0}", reader.GetString(4));
+                        Console.WriteLine("\n");
+                    }
+                }
+                conexao.Close();
+
+            }
+            catch (SqlException ex)
+            {
+
+                Console.WriteLine(ex.Message);
+            }
+
+            return recebe;
+
+        }
+        public String LocalizarAeronave(string sql, SqlConnection conexaosql)
+        {
+            String recebe = "";
+
+            try
+            {
+                SqlConnection conexao = new SqlConnection(Caminho());
+                conexao.Open();
+
+                SqlCommand cmd = new SqlCommand(sql, conexao);
+
+                SqlDataReader reader = null;
+
+                using (reader = cmd.ExecuteReader())
+                {
+                    Console.Clear();
+
+                    while (reader.Read())
+                    {
+                        recebe = reader.GetString(0);
+                        Console.Write(" ID: {0}", reader.GetString(0));
+                        Console.Write(" Destino: {0}", reader.GetString(1));
+                        Console.Write(" Data vôo:{0}", reader.GetDateTime(2).ToShortDateString());
+                        Console.Write(" Situação: {0}", reader.GetString(3));
+                        Console.Write(" Data de cadastro: :{0}", reader.GetDateTime(4).ToShortDateString());
+                        Console.Write(" Situação: {0}", reader.GetInt32(5));
+                        Console.WriteLine("\n");
+                    }
+                }
+                conexao.Close();
+
+            }
+            catch (SqlException ex)
+            {
+
+                Console.WriteLine(ex.Message);
+            }
+
+            return recebe;
+        }
+        public int VerificarExiste(string sql)
+        {
+            conn.Open();
+            int count = 0;
+            SqlCommand sqlVerify = conn.CreateCommand();
+            sqlVerify.CommandText = sql;
+            sqlVerify.Connection = conn;
+            using (SqlDataReader reader = sqlVerify.ExecuteReader())
+            {
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        count++;
+                    }
+                }
+            }
+            if (count != 0)
+            {
+                conn.Close();
+                return 1;
+            }
+            conn.Close();
+            return 0;
         }
 
     }

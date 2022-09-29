@@ -34,14 +34,14 @@ namespace OnTheFly_BD
         public void CadastrarVenda(SqlConnection conexaosql)
         {
             bool retorno;
-            Console.Clear();
+
             String sql = $"SELECT Cpf,Nome,Data_Nasc,Sexo,Data_Cadastro,Data_UltimaCompra,Situção FROM Cpf_Restrito;";
-            p.LocalizarRestritos(conexaosql);
             retorno = p.LocalizarRestritos(conexaosql);
 
             if(retorno == true)
             {
-                Console.WriteLine("Confirmar passageiro?\n\n1- Sim\n2- Não");
+                Console.Clear();
+                Console.WriteLine("Gostaria de iniciar uma venda de passagens?\n\n1- Sim\n2- Não");
                 int op = int.Parse(Console.ReadLine());
 
                 switch (op)

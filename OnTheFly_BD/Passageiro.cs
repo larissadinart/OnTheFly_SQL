@@ -133,7 +133,6 @@ namespace OnTheFly_BD
             banco = new ConexaoBanco();
             banco.LocalizarPassageiro(sql, conexaosql);
 
-            Console.WriteLine("Aperte enter para confirmar.");
             Console.ReadKey();
 
 
@@ -310,10 +309,9 @@ namespace OnTheFly_BD
             retorno = banco.LocalizarRestritos(sql, conexaosql);
             if (retorno == "")
             {
-                Console.WriteLine("Passageiro não possui restrições.\n\n");
+                Console.WriteLine("Cpf sem restrições!\n\n");
                 Console.WriteLine("Aperte enter para continuar.");
                 Console.ReadKey();
-                p.MenuPassageiro();
                 return true;
             }
             else

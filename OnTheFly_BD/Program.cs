@@ -5,10 +5,10 @@ namespace OnTheFly_BD
 {
     internal class Program
     {
-        //static Voo voo = new Voo();
         static Passageiro p = new Passageiro();
         static CompanhiaAerea cia = new CompanhiaAerea();
         static Venda venda = new Venda();
+        static Voo v = new Voo();
         static ConexaoBanco conn = new ConexaoBanco();
         static SqlConnection conexaosql = new SqlConnection(conn.Caminho());
         
@@ -44,7 +44,7 @@ namespace OnTheFly_BD
 
                         break;
                     case 5:
-
+                        v.MenuVoo();
                         break;
                     case 6:
 
