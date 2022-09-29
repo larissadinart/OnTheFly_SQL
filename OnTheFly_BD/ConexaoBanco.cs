@@ -69,7 +69,7 @@ namespace OnTheFly_BD
                 Console.WriteLine(ex.Message);
             }
         }
-        public String LocalizarBD(string sql, SqlConnection conexaosql)
+        public String LocalizarCia(string sql, SqlConnection conexaosql)
         {
             String recebe = "";
 
@@ -146,8 +146,92 @@ namespace OnTheFly_BD
             return recebe;
 
         }
+        public String LocalizarPassageiro(string sql, SqlConnection conexaosql)
+        {
+           String recebe = "";
+
+            try
+            {
+                SqlConnection conexao = new SqlConnection(Caminho());
+                conexao.Open();
+
+                SqlCommand cmd = new SqlCommand(sql, conexao);
+
+                SqlDataReader reader = null;
+
+                using (reader = cmd.ExecuteReader())
+                {
+                    Console.Clear();
+                    Console.WriteLine(">>> Passageiro localizado: <<<\n");
+                    while (reader.Read())
+                    {
+                        recebe = reader.GetString(0);
+                        Console.Write(" {0}", reader.GetString(0));
+                        Console.Write(" {0}", reader.GetString(1));
+                        Console.Write(" {0}", reader.GetDateTime(2).ToShortDateString());
+                        Console.Write(" {0}", reader.GetString(3));
+                        Console.Write(" {0}", reader.GetDateTime(4).ToShortDateString());
+                        Console.Write(" {0}", reader.GetDateTime(5).ToShortDateString());
+                        Console.Write(" {0}", reader.GetString(6));
+                        Console.WriteLine("\n");
+
+                    }
+                    Console.WriteLine("Aperte enter para continuar.");
+                    Console.ReadKey();
+
+                }
+                conexao.Close();
+
+            }
+            catch (SqlException ex)
+            {
+
+                Console.WriteLine(ex.Message);
+            }
+
+            return recebe;
+
+        }
+        public String LocalizarRestritos(string sql, SqlConnection conexaosql)
+        {
+            String recebe = "";
+
+            try
+            {
+                SqlConnection conexao = new SqlConnection(Caminho());
+                conexao.Open();
+
+                SqlCommand cmd = new SqlCommand(sql, conexao);
+
+                SqlDataReader reader = null;
+
+                using (reader = cmd.ExecuteReader())
+                {
+                    Console.Clear();
+  
+                    while (reader.Read())
+                    {
+                        recebe = reader.GetString(0);
+                        Console.Write(" {0}", reader.GetString(0));
+                        Console.WriteLine("\n");
+                    }
+                }
+                conexao.Close();
+
+            }
+            catch (SqlException ex)
+            {
+
+                Console.WriteLine(ex.Message);
+            }
+
+            return recebe;
+
+        }
 
     }
 
-}
+    }
+
+
 
