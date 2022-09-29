@@ -148,7 +148,7 @@ namespace OnTheFly_BD
         }
         public String LocalizarPassageiro(string sql, SqlConnection conexaosql)
         {
-           String recebe = "";
+            String recebe = "";
 
             try
             {
@@ -208,7 +208,7 @@ namespace OnTheFly_BD
                 using (reader = cmd.ExecuteReader())
                 {
                     Console.Clear();
-  
+
                     while (reader.Read())
                     {
                         recebe = reader.GetString(0);
@@ -290,31 +290,71 @@ namespace OnTheFly_BD
                         recebe = reader.GetString(0);
                         Console.Write(" ID: {0}", reader.GetString(0));
                         Console.Write(" Destino: {0}", reader.GetString(1));
-                        Console.Write(" Data vôo:{0}", reader.GetDateTime(2).ToShortDateString());
+                        Console.Write(" Data de Cadastro:{0}", reader.GetDateTime(2).ToShortDateString());
                         Console.Write(" Situação: {0}", reader.GetString(3));
-                        Console.Write(" Data de cadastro: :{0}", reader.GetDateTime(4).ToShortDateString());
-                        Console.Write(" Situação: {0}", reader.GetInt32(5));
-                        Console.WriteLine("\n");
+                        Console.Write(" Data da ultima venda: :{0}", reader.GetDateTime(4).ToShortDateString());
+                        Console.Write(" Capacidade: {0}", reader.GetInt32(5));
                     }
                 }
                 conexao.Close();
-
+                Console.WriteLine("\n\nAperte enter para continuar.");
+                Console.ReadKey();
             }
             catch (SqlException ex)
             {
 
                 Console.WriteLine(ex.Message);
+                Console.ReadKey();
             }
+            return recebe;
+        }
+        public String LocalizarVenda(string sql, SqlConnection conexaosql)
+        {
+            String recebe = "";
 
+            try
+            {
+                SqlConnection conexao = new SqlConnection(Caminho());
+                conexao.Open();
+
+                SqlCommand cmd = new SqlCommand(sql, conexao);
+
+                SqlDataReader reader = null;
+
+                using (reader = cmd.ExecuteReader())
+                {
+                    Console.Clear();
+
+                    while (reader.Read())
+                    {
+                        recebe = reader.GetString(0);
+                        Console.Write(" ID Venda: {0}", reader.GetString(0));
+                        Console.Write(" Data da Venda:{0}", reader.GetDateTime(1).ToShortDateString());
+                        Console.Write(" Valor Total da venda: {0}", reader.GetFloat(2));
+                        Console.Write(" ID Passagem: {0}", reader.GetString(3));
+                        Console.Write(" Cpf: {0}", reader.GetString(4));
+                    }
+                }
+                conexao.Close();
+                Console.WriteLine("\n\nAperte enter para continuar.");
+                Console.ReadKey();
+            }
+            catch (SqlException ex)
+            {
+
+                Console.WriteLine(ex.Message);
+                Console.ReadKey();
+            }
             return recebe;
         }
         public int VerificarExiste(string sql)
         {
-            conn.Open();
+            SqlConnection conexao = new SqlConnection(Caminho());
+            conexao.Open();
             int count = 0;
-            SqlCommand sqlVerify = conn.CreateCommand();
+            SqlCommand sqlVerify = conexao.CreateCommand();
             sqlVerify.CommandText = sql;
-            sqlVerify.Connection = conn;
+            sqlVerify.Connection = conexao;
             using (SqlDataReader reader = sqlVerify.ExecuteReader())
             {
                 if (reader.HasRows)
@@ -327,16 +367,16 @@ namespace OnTheFly_BD
             }
             if (count != 0)
             {
-                conn.Close();
+                conexao.Close();
                 return 1;
             }
-            conn.Close();
+            conexao.Close();
             return 0;
         }
 
     }
 
-    }
+}
 
 
 

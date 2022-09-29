@@ -197,6 +197,7 @@ namespace OnTheFly_BD
                         break;
                     case 1:
                         cia.CadastrarCia(conexaosql);
+                        Program.Menu();
                         break;
                     case 2:
                         cia.LocalizarCia(conexaosql);
@@ -293,7 +294,7 @@ namespace OnTheFly_BD
                 this.Cnpj = Console.ReadLine();
             } while (ValidarCnpj(this.Cnpj) == false || this.Cnpj.Length < 14);
             Console.Clear();
-            string sql = $"SELECT Cnpj FROM CiasBloqueadas WHERE CNPJ = '{this.Cnpj}';";
+            string sql = $"SELECT Cnpj FROM Cnpj_Restrito WHERE CNPJ = '{this.Cnpj}';";
             banco = new ConexaoBanco();
             banco.LocalizarBloqueadas(sql, conexaosql);
 

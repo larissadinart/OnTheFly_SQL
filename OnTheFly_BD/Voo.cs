@@ -65,7 +65,7 @@ internal class Voo
         if (verificar != 0)
         {
             Console.Clear();
-            Console.WriteLine(">>> Cadastro de Vôo <<<");
+            Console.WriteLine(">>> Cadastro de Vôo <<<\n\n");
             int valorId = RandomCadastroVoo();
             this.Id = "V" + valorId.ToString("D4");
             Destino = DestinoVoo();
@@ -98,15 +98,15 @@ internal class Voo
             }
             sql = "insert into Voo (Id, Destino, Data_Cadastro, Data_Voo, Situacao, Inscricao) values ('" + this.Id + "', '" + this.Destino + "','" +
             this.DataCadastro + "','" + this.DataVoo + "','" + this.Situacao + "', '" + aeronave.Inscricao + "', );";
-            Console.WriteLine(sql);
+            Console.WriteLine("Inscrição de Vôo realizada com sucesso!\n\nAperte enter para continuar.");
             Console.ReadKey();
             conexao.InserirBD(sql,conexaosql);
-            Console.WriteLine("Inscrição de Vôo realizada com sucesso!");
+
         }
         else
         {
             Console.Clear();
-            Console.WriteLine("Impossível cadastrar vôo, não existe nenhuma aeronave Ativa Cadastrada");
+            Console.WriteLine("Impossível cadastrar vôo, não existe nenhuma aeronave Ativa Cadastrada\n\n");
             Console.WriteLine("Pressione enter para continuar.");
             Console.ReadKey();
         }

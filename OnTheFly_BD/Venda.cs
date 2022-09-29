@@ -9,7 +9,7 @@ namespace OnTheFly_BD
 {
     internal class Venda
     {
-        public String Id_Venda { get; set; }
+        public int Id_Venda { get; set; }
         public DateTime Data_venda { get; set; }
         public float Valor_Total { get; set; }
         public String Id_Passagem { get; set; }
@@ -29,7 +29,6 @@ namespace OnTheFly_BD
         //    Data_venda = DateTime.Now;
         //    p.ConsultarPassageiro(conexaosql);
         //    this.Cpf = p.Cpf;
-
         //}
         public void CadastrarVenda(SqlConnection conexaosql)
         {
@@ -47,8 +46,15 @@ namespace OnTheFly_BD
                 switch (op)
                 {
                     case 1:
-                        Data_venda = DateTime.Now;
+                        this.Id_Venda = RandomCadastroVenda();
+                        this.Data_venda = DateTime.Now;
                         p.LocalizarPassageiro(conexaosql);
+                        string sqll = $"INSERT INTO VendaPassagem(ID_Venda, Data_Venda, Valor_Total,ID_Passagem, Cpf) VALUES ('{this.Id_Venda}', " +
+                        $"'{this.Data_venda}','{this.Valor_Total}','{this.ID_Passagem}','{this.Cpf}';";
+                        banco = new ConexaoBanco();
+                        banco.InserirBD(sqll, conexaosql);
+                        Console.WriteLine("\n>>> Dados da Venda <<<\n\nID");
+                        Console.ReadKey();
 
                         break;
                     case 2:
@@ -67,7 +73,57 @@ namespace OnTheFly_BD
 
 
         }
+        private static int RandomCadastroVenda()
+        {
+            Random rand = new Random();
+            int[] numero = new int[99999];
+            int aux = 0;
+            for (int k = 0; k < numero.Length; k++)
+            {
+                int rnd = 0;
+                do
+                {
+                    rnd = rand.Next(1000, 9999);
+                } while (numero.Contains(rnd));
+                numero[k] = rnd;
+                aux = numero[k];
+            }
+            return aux;
+        }
+        public void MenuVenda()
+        {
+            int op;
 
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Escolha a opção desejada:\n\n1- Cadastrar\n2- Localizar\n3- Editar\n0- Sair");
+                op = int.Parse(Console.ReadLine());
+                CompanhiaAerea cia = new CompanhiaAerea();
+                SqlConnection conexaosql = new SqlConnection();
+                switch (op)
+                {
+                    case 0:
+                        Environment.Exit(0);
+                        break;
+                    case 1:
+                        CadastrarVenda(conexaosql);
+                        Program.Menu();
+                        break;
+                    case 2:
+
+                        break;
+                    case 3:
+
+                        break;
+                    case 4:
+
+                        break;
+                    default:
+                        break;
+                }
+            } while (op > 0 && op < 3);
+        }
     }
 }
 

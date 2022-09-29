@@ -17,7 +17,7 @@ internal class Aeronave
     public DateTime UltimaVenda = DateTime.Now;
     public DateTime DataCadastro = DateTime.Now;
     public string Situacao { get; set; }
-    public ConexaoBanco banco;
+    public ConexaoBanco banco = new ConexaoBanco();
     public String CNPJ { get; set; }
     public Aeronave() { }
     public Aeronave(String Inscrição, string Situacao, String Capacidade)
@@ -48,10 +48,27 @@ internal class Aeronave
     }
     public void CadastroAeronaves(SqlConnection conexaosql)
     {
-        Console.WriteLine("\n>>> Cadastro de Aeronave <<<");
-        this.CNPJ = Console.ReadLine();
+        UltimaVenda = DateTime.Now;
+        DataCadastro = DateTime.Now;
         this.Inscricao = "PR-" + GeraNumero();
         int cap = 0;
+
+        Console.Clear();
+        Console.WriteLine(">>> Cadastro de Aeronave <<<\n\n");
+        Console.WriteLine("Informe o CNPJ da Companhia Aérea: ");
+        this.CNPJ = Console.ReadLine();
+
+        string sql = "Select CNPJ from CiaAerea where CNPJ = '" + this.CNPJ + "';";
+
+        int verificar = banco.VerificarExiste(sql);
+
+        while (verificar == 0)
+        {
+            Console.WriteLine("Cnpj não corresponde a uma Cia Aerea, informe novamente: ");
+            this.CNPJ = Console.ReadLine();
+            sql = "Select CNPJ from CompanhiaAerea where CNPJ = '" + this.CNPJ + "';";
+            verificar = banco.VerificarExiste(sql);
+        }
         do
         {
             Console.Write("\nInforme a Capacidade da Aeronave: ");
@@ -73,40 +90,42 @@ internal class Aeronave
                           "\nSituação: ");
             Situacao = Console.ReadLine().ToUpper();
         } while (!Situacao.Equals("A") && !Situacao.Equals("I"));
-        UltimaVenda = DateTime.Now;
-        DataCadastro = DateTime.Now;
-        String sql = $"Insert Into Aeronave(InscricaoANAC,CNPJ,DataCadastro,Situacao,UltimaVenda,Capacidade) " +
+        String func = $"Insert Into Aeronave(InscricaoAnac,Cnpj,Data_Cadastro,Situacao,UltimaVenda,Capacidade) " +
                      $"Values ('{this.Inscricao}','{this.CNPJ}','{this.DataCadastro}','{this.Situacao}','{this.UltimaVenda}','{this.Capacidade}');";
         banco = new ConexaoBanco();
-        banco.InserirBD(sql, conexaosql);
-        Console.WriteLine("\nCadastro de Aeronave Salvo com Sucesso!");
+        banco.InserirBD(func, conexaosql);
+        Console.WriteLine($">>> Informações Cadastradas:\n\nId:{this.Inscricao}\nCNPJ: {this.CNPJ}\nData de Cadastro: {this.DataCadastro}\nData da última venda: {this.UltimaVenda}\nCapacidade: {this.Capacidade}\nSituação: {this.Situacao}\n");
+        Console.WriteLine("\nCadastro de Aeronave Salvo com Sucesso!\n\nAperte enter para continuar.");
+        Console.ReadKey();
     }
-    public void LocalizarAeronave(SqlConnection conexaosql)
+    public void LocalizarAeronave(SqlConnection conexaosql) //ERROOOO
     {
+        ConexaoBanco banco = new ConexaoBanco();
+
         Console.Clear();
-        Console.WriteLine("\n>>> Localizar Aeronaves <<<");
-        Console.Write("\n Digite o ID da aeronave: ");
+        Console.WriteLine(">>> Localizar Aeronaves <<<\n\n");
+        Console.Write("Digite o ID da aeronave: ");
         this.Inscricao = Console.ReadLine();
         while (this.Inscricao.Length < 6)
         {
             Console.WriteLine("\nID Inválido, tente novamente:");
             this.Inscricao = Console.ReadLine();
         }
-        ////Ver se existe Companhia Aeronave cadastrada, perguntar pro usuario o CNPJ manda pro banco via select e  localizar e se tiver deletar
-        //this.CNPJ = "15086511000145";
-        String sql = $"Select InscricaoANAC,CNPJ,DataCadastro,Situacao,UltimaVenda,Capacidade From Aeronave Where InscricaoANAC=('{this.Inscricao}') and CNPJ=('{this.CNPJ}');";
+        String sql = $"Select InscricaoANAC,CNPJ,Data_Cadastro,Situacao,UltimaVenda,Capacidade From Aeronave Where InscricaoANAC='{this.Inscricao}' and CNPJ='{this.CNPJ}';";
+        Console.WriteLine(sql);
         banco = new ConexaoBanco();
         Console.Clear();
+        Console.WriteLine(sql);
         if (!string.IsNullOrEmpty(banco.LocalizarAeronave(sql, conexaosql)))
         {
-            Console.WriteLine("\n\tAperte Qualquer enter para encerrar.");
+            banco.LocalizarAeronave(sql, conexaosql);
+            Console.WriteLine("Aperte enter para continuar.");
             Console.ReadKey();
         }
         else
         {
-            Console.WriteLine("\n\tAeronove não Encontrada!!!");
+            Console.WriteLine("Aeronave não encontrada!!!");
         }
-
     }
     public void DeletarAeronave(SqlConnection conexaosql)
     {
@@ -152,8 +171,9 @@ internal class Aeronave
     {
         ConexaoBanco banco = new ConexaoBanco();
         int opc = 0;
+        Console.Clear();
         Console.WriteLine(">>> Editar Aeronave <<<\n\n");
-        Console.Write("\nDigite o ID da aeronave: ");
+        Console.Write("Digite o ID da aeronave: ");
         this.Inscricao = Console.ReadLine().ToUpper();
         while (this.Inscricao.Length < 6)
         {
@@ -161,14 +181,12 @@ internal class Aeronave
             Console.Write("ID_ANAC: ");
             this.Inscricao = Console.ReadLine().ToUpper();
         }
-        //pedir o cnpj 
-        //this.CNPJ = "15086511000145";
         Console.Clear();
-        String sql = $"Select InscricaoANAC,CNPJ,DataCadastro,Situacao,UltimaVenda,Capacidade From Aeronave Where InscricaoANAC=('{this.Inscricao}');";
+        String sql = $"Select InscricaoANAC,CNPJ,Data_Cadastro,Situacao,UltimaVenda,Capacidade From Aeronave Where InscricaoANAC=('{this.Inscricao}');";
         banco = new ConexaoBanco();
-        //switch
         if (!string.IsNullOrEmpty(banco.LocalizarAeronave(sql, conexaosql)))
         {
+            Console.Clear();
             Console.WriteLine("Digite a Opção que Deseja Editar\n");
             Console.WriteLine("1- Data do Cadastro");
             Console.WriteLine("2- Data da última venda");
@@ -185,15 +203,15 @@ internal class Aeronave
                 case 1:
                     Console.Write("\nAlterar a Data de Cadastro: ");
                     this.DataCadastro = DateTime.Parse(Console.ReadLine());
-                    sql = $"Update Aeronave Set DataCadastro=('{this.DataCadastro}') Where InscricaoANAC=('{this.Inscricao}');";
-                    Console.WriteLine("\nData de Cadastro alterada Com Sucesso... ");
+                    sql = $"Update Aeronave Set Data_Cadastro=('{this.DataCadastro}') Where InscricaoANAC=('{this.Inscricao}');";
+                    Console.WriteLine("\nData de cadastro alterada Com Sucesso... ");
                     Thread.Sleep(2000);
                     Console.Clear();
                     break;
                 case 2:
                     Console.Write("\nAlterar a Data da Ultima Venda: ");
                     this.UltimaVenda = DateTime.Parse(Console.ReadLine());
-                    Console.WriteLine("\nData da Ultima Venda alterada Com Sucesso... ");
+                    Console.WriteLine("\nData da última Venda alterada Com Sucesso... ");
                     Thread.Sleep(2000);
                     Console.Clear();
                     sql = $"Update Aeronave Set UltimaVenda=('{this.UltimaVenda}') Where InscricaoANAC=('{this.Inscricao}');";
@@ -220,7 +238,11 @@ internal class Aeronave
             banco = new ConexaoBanco();
             banco.EditarBD(sql, conexaosql);
         }
-        Console.WriteLine("\n\tAeronove Não Encontrada!!!");
+        else
+        {
+            Console.WriteLine("Aeronove não encontrada.");
+        }
+
 
     }
     public void ConsultarAeronave(SqlConnection conexaosql)
@@ -259,4 +281,36 @@ internal class Aeronave
                 break;
         }
     }
+    public void MenuAeronave()
+    {
+        CompanhiaAerea cia = new CompanhiaAerea();
+        SqlConnection conexaosql = new SqlConnection();
+        int op;
+
+        do
+        {
+            Console.Clear();
+            Console.WriteLine("Escolha a opção desejada:\n\n1- Cadastrar\n2- Localizar\n3- Editar\n0- Sair");
+            op = int.Parse(Console.ReadLine());
+        } while (op < 0 && op > 3);
+        switch (op)
+        {
+            case 0:
+                Environment.Exit(0);
+                break;
+            case 1:
+                CadastroAeronaves(conexaosql);
+                break;
+            case 2:
+                LocalizarAeronave(conexaosql);
+                break;
+            case 3:
+                EditarAeronave(conexaosql);
+                break;
+            default:
+                break;
+        }
+
+    }
 }
+

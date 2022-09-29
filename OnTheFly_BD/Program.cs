@@ -9,6 +9,7 @@ namespace OnTheFly_BD
         static CompanhiaAerea cia = new CompanhiaAerea();
         static Venda venda = new Venda();
         static Voo v = new Voo();
+        static Aeronave an = new Aeronave();
         static ConexaoBanco conn = new ConexaoBanco();
         static SqlConnection conexaosql = new SqlConnection(conn.Caminho());
         
@@ -23,7 +24,7 @@ namespace OnTheFly_BD
             {
                 Console.Clear();
                 Console.WriteLine(">>>>> BEM VINDO AO AEROPORTO ON THE FLY! <<<<<\n\n");
-                Console.WriteLine("Escolha a opção desejada:\n\n1- Vender Passagem\n2- Passageiro\n3- Cia.Aérea\n4- Destinos\n5- Vôos\n6- Aeronaves\n0- Sair");
+                Console.WriteLine("Escolha a opção desejada:\n\n1- Vender Passagem\n2- Passageiro\n3- Cia.Aérea\n4- Vôos\n5- Aeronaves\n0- Sair");
                 op = int.Parse(Console.ReadLine());
 
                 switch (op)
@@ -32,7 +33,7 @@ namespace OnTheFly_BD
                         Environment.Exit(0);
                         break;
                     case 1:
-                        venda.CadastrarVenda(conexaosql);
+                        venda.MenuVenda();
                         break;
                     case 2:
                         p.MenuPassageiro();
@@ -41,18 +42,15 @@ namespace OnTheFly_BD
                         cia.MenuCiaAerea();
                         break;
                     case 4:
-
-                        break;
-                    case 5:
                         v.MenuVoo();
                         break;
-                    case 6:
-
+                    case 5:
+                        an.MenuAeronave();
                         break;
                     default:
                         break;
                 }
-            } while (op < 0 || op > 6);
+            } while (op < 0 || op > 5);
         }
     }
 }
