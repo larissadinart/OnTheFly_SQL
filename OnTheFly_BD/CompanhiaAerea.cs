@@ -269,7 +269,7 @@ namespace OnTheFly_BD
 
             if (ValidarCnpj(this.Cnpj))
             {
-                string sql = $"Delete From CiaAerea Where Cnpj=('{this.Cnpj}');";
+                string sql = $"Delete From Cnpj_Restrito Where Cnpj=('{this.Cnpj}');";
                 banco = new ConexaoBanco();
                 banco.DeletarBD(sql, conexaosql);
                 Console.WriteLine("\n\nCNPJ excluido do cadastro de bloqueados!Aperte enter para continuar...");
