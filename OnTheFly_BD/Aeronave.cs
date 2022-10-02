@@ -94,9 +94,11 @@ internal class Aeronave
                      $"Values ('{this.Inscricao}','{this.CNPJ}','{this.DataCadastro}','{this.Situacao}','{this.UltimaVenda}','{this.Capacidade}');";
         banco = new ConexaoBanco();
         banco.InserirBD(func, conexaosql);
+        Console.Clear();
         Console.WriteLine($">>> Informações Cadastradas:\n\nId:{this.Inscricao}\nCNPJ: {this.CNPJ}\nData de Cadastro: {this.DataCadastro}\nData da última venda: {this.UltimaVenda}\nCapacidade: {this.Capacidade}\nSituação: {this.Situacao}\n");
         Console.WriteLine("\nCadastro de Aeronave Salvo com Sucesso!\n\nAperte enter para continuar.");
         Console.ReadKey();
+        Program.Menu();
     }
     public void LocalizarAeronave(SqlConnection conexaosql) //ERROOOO
     {
@@ -126,6 +128,7 @@ internal class Aeronave
         {
             Console.WriteLine("Aeronave não encontrada!!!");
         }
+        Program.Menu();
     }
     public void DeletarAeronave(SqlConnection conexaosql)
     {
@@ -166,6 +169,7 @@ internal class Aeronave
         {
             Console.WriteLine("\nAeronave não Encontrada!!!");
         }
+        Program.Menu();
     }
     public void EditarAeronave(SqlConnection conexaosql)
     {
@@ -242,7 +246,7 @@ internal class Aeronave
         {
             Console.WriteLine("Aeronove não encontrada.");
         }
-
+        Program.Menu();
 
     }
     public void ConsultarAeronave(SqlConnection conexaosql)
@@ -280,6 +284,7 @@ internal class Aeronave
                 banco.LocalizarAeronave(sql, conexaosql);
                 break;
         }
+        Program.Menu();
     }
     public void MenuAeronave()
     {
@@ -290,9 +295,9 @@ internal class Aeronave
         do
         {
             Console.Clear();
-            Console.WriteLine("Escolha a opção desejada:\n\n1- Cadastrar\n2- Localizar\n3- Editar\n0- Sair");
+            Console.WriteLine("Escolha a opção desejada:\n\n1- Cadastrar\n2- Localizar\n3- Editar\n4- Voltar ao Menu anterior\n0- Sair");
             op = int.Parse(Console.ReadLine());
-        } while (op < 0 && op > 3);
+        } while (op < 0 && op > 4);
         switch (op)
         {
             case 0:
@@ -306,6 +311,8 @@ internal class Aeronave
                 break;
             case 3:
                 EditarAeronave(conexaosql);
+                break;
+            case 4:Program.Menu();
                 break;
             default:
                 break;

@@ -17,6 +17,7 @@ internal class Voo
     public DateTime DataVoo { get; set; }
     public DateTime DataCadastro { get; set; }
     public string Situacao { get; set; }
+    public int AssentosOcupados { get; set; }
     public Voo()
     {
     }
@@ -59,6 +60,7 @@ internal class Voo
     }
     public void CadastrarVoo(SqlConnection conexaosql)
     {
+        this.AssentosOcupados = 0;
         Aeronave aeronave = new Aeronave();
         string sql = "Select InscricaoANAC from Aeronave;";
         int verificar = conexao.VerificarExiste(sql);
@@ -69,7 +71,7 @@ internal class Voo
             int valorId = RandomCadastroVoo();
             this.Id = "V" + valorId.ToString("D4");
             Destino = DestinoVoo();
-            Console.Write("Insira o nome da aeronave: ");
+            Console.Write("Insira o ID da aeronave: ");
             aeronave.Inscricao = Console.ReadLine();
             sql = "select InscricaoANAC from Aeronave where InscricaoANAC = '" + aeronave.Inscricao + "';";
             verificar = conexao.VerificarExiste(sql);
@@ -96,11 +98,11 @@ internal class Voo
                 Console.WriteLine("O valor informado é inválido, por favor informe novamente!\n[A] Ativo \n[C] Cancelado");
                 Situacao = Console.ReadLine().ToUpper();
             }
-            sql = "insert into Voo (Id, Destino, Data_Cadastro, Data_Voo, Situacao, Inscricao) values ('" + this.Id + "', '" + this.Destino + "','" +
-            this.DataCadastro + "','" + this.DataVoo + "','" + this.Situacao + "', '" + aeronave.Inscricao + "', );";
+            sql = $"insert into Voo (Id_Voo, Destino, Data_Cadastro, Data_Voo, Situacao, Inscricao, AssentosOcupados) values ('{ this.Id}','{this.Destino}', '{this.DataCadastro}', '{this.DataVoo}','{this.Situacao}','{aeronave.Inscricao}','{this.AssentosOcupados}');";
+            conexao.InserirBD(sql, conexaosql);
             Console.WriteLine("Inscrição de Vôo realizada com sucesso!\n\nAperte enter para continuar.");
             Console.ReadKey();
-            conexao.InserirBD(sql,conexaosql);
+
 
         }
         else
@@ -110,6 +112,7 @@ internal class Voo
             Console.WriteLine("Pressione enter para continuar.");
             Console.ReadKey();
         }
+        Program.Menu();
     }
     public string DestinoVoo()
     {
@@ -197,11 +200,13 @@ internal class Voo
             Console.WriteLine("Pressione enter para continuar.");
             Console.ReadKey();
         }
+        Program.Menu();
     }
     public void LocalizarVoo(SqlConnection sqlConnection)
     {
+        Console.Clear();
         Console.WriteLine(">>> Localizar dados Vôo <<<");
-        Console.Write("Insira o ID do Vôo que deseja alterar: ");
+        Console.Write("Insira o ID do Vôo que deseja localizar: ");
         string idVoo = Console.ReadLine();
         string sql = "Select Id from Voo where Id = '" + idVoo + "';";
         int verificar = conexao.VerificarExiste(sql);

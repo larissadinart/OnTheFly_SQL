@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -327,8 +328,8 @@ namespace OnTheFly_BD
 
                     while (reader.Read())
                     {
-                        recebe = reader.GetString(0);
-                        Console.Write(" ID Venda: {0}", reader.GetString(0));
+                        //recebe = reader.GetString(0);
+                        Console.Write(" ID Venda: {0}", reader.GetInt32(0));
                         Console.Write(" Data da Venda:{0}", reader.GetDateTime(1).ToShortDateString());
                         Console.Write(" Valor Total da venda: {0}", reader.GetFloat(2));
                         Console.Write(" ID Passagem: {0}", reader.GetString(3));
@@ -372,6 +373,27 @@ namespace OnTheFly_BD
             }
             conexao.Close();
             return 0;
+        }
+        public static string LocalizarDado(string sql, SqlConnection conexao,string parametro)
+        {
+            var situacao = "";
+            ConexaoBanco caminho = new();
+            conexao = new(caminho.Caminho());
+            conexao.Open();
+            SqlCommand cmd = new(sql, conexao);
+            cmd.CommandType = CommandType.Text;
+            using (SqlDataReader reader = cmd.ExecuteReader())
+            {
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        situacao = reader[$"{parametro}"].ToString();
+                    }
+                }
+            }
+            conexao.Close();
+            return situacao;
         }
 
     }

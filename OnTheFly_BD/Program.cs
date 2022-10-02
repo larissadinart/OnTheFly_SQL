@@ -24,7 +24,7 @@ namespace OnTheFly_BD
             {
                 Console.Clear();
                 Console.WriteLine(">>>>> BEM VINDO AO AEROPORTO ON THE FLY! <<<<<\n\n");
-                Console.WriteLine("Escolha a opção desejada:\n\n1- Vender Passagem\n2- Passageiro\n3- Cia.Aérea\n4- Vôos\n5- Aeronaves\n0- Sair");
+                Console.WriteLine("Escolha a opção desejada:\n\n1- Venda de Passagem\n2- Passageiro\n3- Cia.Aérea\n4- Vôos\n5- Aeronaves\n0- Sair");
                 op = int.Parse(Console.ReadLine());
 
                 switch (op)
