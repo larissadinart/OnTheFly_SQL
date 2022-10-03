@@ -97,13 +97,13 @@ namespace OnTheFly_BD
                                         assentosOcupados = +1;
                                         sql = $"select Valor_Unit from Passagem where Id_Voo = '{idVoo}';";
                                         parametro = "Valor_Unit";
-                                        valorPassagem = Convert.ToDouble((ConexaoBanco.LocalizarDado(sql, conexaosql, parametro)));
+                                        valorPassagem = Convert.ToDouble(ConexaoBanco.LocalizarDado(sql, conexaosql, parametro));
                                         this.Valor_Total = valorPassagem * contaPassagem;
                                         sql = $"select Id_Voo from Passagem where Id_Voo = '{idVoo}';";
                                         parametro = "Id_Voo";
                                         idPassagem = ConexaoBanco.LocalizarDado(sql, conexaosql, parametro);
                                         string sqll = $"insert into VendaPassagem(Id_Venda, Data_Venda, Valor_Total, ID_Passagem,Cpf) values ('{this.Id_Venda}', " +
-                                        $"'{this.Data_venda}','{this.Valor_Total}','{idPassagem}','{this.Cpf}','{valorPassagem}','{idVoo}');";
+                                        $"'{this.Data_venda}','{this.Valor_Total}','{idPassagem}','{this.Cpf}');";
                                         banco.InserirBD(sql, conexaosql);
                                         sqll = $"insert VendaPassagem(Data_Venda, Valor_Total, Cpf) values ('{DateTime.Now}','{this.Valor_Total}','{this.Cpf}');";
                                         banco.InserirBD(sql, conexaosql);
@@ -113,7 +113,7 @@ namespace OnTheFly_BD
                                         //Capacidade do Voo
                                         update = $"Update Aeronave set Capacidade = {capacidade - 1} where InscricaoANAC = '{Inscricao}'";
                                         banco.EditarBD(update, conexaosql);
-                                        Console.WriteLine("\nCadastro de Venda com Sucesso!\n\nPressione uma tecla para prosseguir!");
+                                        Console.WriteLine("\nCadastro de Venda efetuado com Sucesso!\n\nPressione uma tecla para prosseguir!");
                                         Console.ReadKey();
                                     }
                                 }

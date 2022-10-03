@@ -88,8 +88,8 @@ namespace OnTheFLy_BD
                     this.SituacaoPassagem = Console.ReadLine().ToUpper();
                 }
                 Console.WriteLine("Situação da passagem: " + this.SituacaoPassagem);
-                string query = $"insert into Passagem(Id_Passagem, Id_Voo, Data_UltimaOp, Valor_Unit, Situacao) values " +
-                    $"('{this.IdPassagem}','{voo.Id}','{this.DataUltimaOperacao}','{this.Valor}','{this.SituacaoPassagem}');";
+                string query = $"insert into Passagem(Id_Passagem, Id_Voo, Data_UltimaOp, Valor_Unit,Valor_total,Situacao) values " +
+                    $"('{this.IdPassagem}','{voo.Id}','{this.DataUltimaOperacao}','{this.Valor}','{this.Valor}','{this.SituacaoPassagem}');";
                 conexao.InserirBD(query, conectar);
             }
             else
