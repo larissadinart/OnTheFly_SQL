@@ -328,12 +328,14 @@ namespace OnTheFly_BD
 
                     while (reader.Read())
                     {
-                        //recebe = reader.GetString(0);
-                        Console.Write(" ID Venda: {0}", reader.GetInt32(0));
+                        recebe = reader.GetString(0);
+                        Console.Write(" ID Venda: {0}", reader.GetString(0));
                         Console.Write(" Data da Venda:{0}", reader.GetDateTime(1).ToShortDateString());
                         Console.Write(" Valor Total da venda: {0}", reader.GetFloat(2));
                         Console.Write(" ID Passagem: {0}", reader.GetString(3));
                         Console.Write(" Cpf: {0}", reader.GetString(4));
+
+                        //VendaPassagem(Id_Venda, Data_Venda, Valor_Total, ID_Passagem, Cpf)
                     }
                 }
                 conexao.Close();

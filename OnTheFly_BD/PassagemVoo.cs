@@ -65,7 +65,7 @@ namespace OnTheFLy_BD
                 this.DataUltimaOperacao = DateTime.Now;
                 string parametro = "Destino";
                 sql = $"select Destino from Voo where Id_Voo = '{idVoo}';";
-                string destino = banco.LocalizarVenda(sql, conectar);
+                string destino = ConexaoBanco.LocalizarDado(sql,conectar,parametro);
                 voo.Destino = destino;
                 if (voo.Destino == "BSB")
                 {

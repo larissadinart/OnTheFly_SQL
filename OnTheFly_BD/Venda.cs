@@ -53,7 +53,7 @@ namespace OnTheFly_BD
                     case 1:
                         this.Data_venda = DateTime.Now;
                         Console.WriteLine("Data da venda: " + this.Data_venda);
-                            Console.WriteLine("Quantas passagens voce gostaria de comprar? (Maximo 4 por Venda)");
+                            Console.WriteLine("\nQuantas passagens voce gostaria de comprar? (Maximo 4 por Venda)");
                             int contaPassagem = int.Parse(Console.ReadLine());
                         while (contaPassagem < 1 || contaPassagem > 4)
                         {
